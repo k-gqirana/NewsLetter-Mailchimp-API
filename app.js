@@ -36,17 +36,6 @@ app.post("/", function (req, res) {
     auth: process.env.MAIL_CHIMP_AUTH,
   };
   const request = https.request(url, options, function (response) {
-    mailchimp.setConfig({
-      apiKey: process.env.MAIL_CHIMP_API,
-      server: "us18",
-    });
-
-    async function run() {
-      const response = await mailchimp.ping.get();
-      console.log(response);
-    }
-
-    run();
     if (response.statusCode === 200) {
       res.sendFile(__dirname + "/success.html");
     } else {
