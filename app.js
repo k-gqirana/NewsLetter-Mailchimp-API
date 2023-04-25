@@ -4,8 +4,21 @@ const bodyParser = require("body-parser");
 const request = require("request");
 const https = require("https");
 const app = express();
+const mailchimp = require("@mailchimp/mailchimp_marketing");
+
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+mailchimp.setConfig({
+  apiKey: process.env.MAIL_CHIMP_API,
+  server: "us18",
+});
+
+async function run() {
+  const response = await mailchimp.ping.get();
+  console.log(response);
+}
+
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/signup.html");
 });
@@ -48,7 +61,9 @@ app.post("/", function (req, res) {
 app.post("/failure", function (req, res) {
   res.redirect("/");
 });
+
+run();
+
 app.listen(process.env.PORT || 3000, function () {
-  //Listens for a dynamic port on the heroku servers used to deploy app OR local port when we want to test
   console.log("Server is running on port 3000");
 });
