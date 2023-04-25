@@ -45,6 +45,8 @@ app.post("/", function (req, res) {
       const response = await mailchimp.ping.get();
       console.log(response);
     }
+
+    run();
     if (response.statusCode === 200) {
       res.sendFile(__dirname + "/success.html");
     } else {
@@ -60,8 +62,6 @@ app.post("/", function (req, res) {
 app.post("/failure", function (req, res) {
   res.redirect("/");
 });
-
-run();
 
 app.listen(process.env.PORT || 3000, function () {
   console.log("Server is running on port 3000");
